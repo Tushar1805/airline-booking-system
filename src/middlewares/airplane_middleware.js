@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const { ErrorResponse } = require("../utils/common");
+const AppError = require("../utils/errors/app_error");
 
 /**
  * Middleware to validate the request body for creating an airplane.
@@ -12,9 +13,10 @@ const { ErrorResponse } = require("../utils/common");
 function validateCreateRequest(req, res, next) {
   if (!req.body.modelNumber) {
     ErrorResponse.message = "Model number is required";
-    ErrorResponse.error = {
-      message: "Model number is required in correct form",
-    };
+    ErrorResponse.error = new AppError(
+      ["Model number is required in correct form"],
+      StatusCodes.BAD_REQUEST
+    );
 
     return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
   }
