@@ -83,9 +83,31 @@ async function destroyAirplane(req, res) {
   }
 }
 
+/***
+ ** PATCH: /api/v1/airplanes/:id
+ * @param {int} req.params.id - The ID of the airplane to update
+ * @param {Object} req.body - The updated airplane data
+ * @description Updates an airplane by its ID
+ * @returns {Object} Success message and updated airplane object
+ */
+
+async function updateAirplane(req, res) {
+  try {
+    const airplane = await AirplaneService.updateAirplane(req.params.id, req.body);
+    SuccessResponse.message = "Airplane updated successfully";
+    SuccessResponse.data = airplane;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.message = "Something went wrong while updating the airplane";
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   createAirplane,
   getAirplanes,
   getAirplane,
   destroyAirplane,
+  updateAirplane
 };

@@ -42,7 +42,12 @@ class CrudRepository {
   }
 
   async update(id, data) {
-    return await this.model.update(data, { where: { id: id } });
+    const response = await this.model.update(data, { where: { id: id } });
+    if (!response[0]) {
+      throw new AppError("Airplane not found", StatusCodes.NOT_FOUND);
+    }
+
+    return await this.model.findByPk(id);
   }
 
   async delete(id) {
