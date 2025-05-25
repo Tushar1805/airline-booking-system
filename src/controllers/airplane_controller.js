@@ -37,7 +37,6 @@ async function getAirplanes(req, res) {
     SuccessResponse.data = airplanes;
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
-    console.error("Error fetching airplanes:", error);
     ErrorResponse.message = "Something went wrong while fetching the airplanes";
     ErrorResponse.error = error;
     return res.status(error.statusCode).json(ErrorResponse);
@@ -58,8 +57,27 @@ async function getAirplane(req, res) {
     SuccessResponse.data = airplane;
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
-    console.error("Error fetching airplanes:", error);
     ErrorResponse.message = "Something went wrong while fetching the airplanes";
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+/***
+ ** DELETE: /api/v1/airplanes/:id
+ * @param {int} req.params.id - The ID of the airplane to fetch
+ * @description Deletes an airplane by its ID
+ * @returns {Object} Success message and deleted airplane object
+ */
+
+async function destroyAirplane(req, res) {
+  try {
+    const response = await AirplaneService.destroyAirplane(req.params.id);
+    SuccessResponse.message = "Airplane deleted successfully";
+    SuccessResponse.data = response;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.message = "Something went wrong while deleting the airplane";
     ErrorResponse.error = error;
     return res.status(error.statusCode).json(ErrorResponse);
   }
@@ -69,4 +87,5 @@ module.exports = {
   createAirplane,
   getAirplanes,
   getAirplane,
+  destroyAirplane,
 };
