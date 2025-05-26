@@ -20,7 +20,7 @@ class CrudRepository {
       },
     });
     if (response === 0) {
-      throw new AppError("Airplane not found", StatusCodes.NOT_FOUND);
+      throw new AppError("Data not found", StatusCodes.NOT_FOUND);
     }
     return response;
   }
